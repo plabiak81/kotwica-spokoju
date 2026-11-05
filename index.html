@@ -1,0 +1,1251 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Kotwica Spokoju</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --ink:       #1a1714;
+    --paper:     #f3f1ea;
+    --fog:       #dcd8cc;
+    --card:      #fbfaf6;
+    --sage:      #7a9e87;
+    --sage-dim:  #4f7260;
+    --rust:      #8b4a3a;
+    --gold:      #b9862f;
+    --mist:      #b8ccc4;
+    --text-dim:  #655e55;
+    --side:      #1a1f1c;
+    --on-sage:   #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink: #e8e4da; --paper: #141916; --fog: #2a322d; --card: #1c231f;
+      --sage: #86ad94; --sage-dim: #9cc4ab; --rust: #d89683; --gold: #dcae62;
+      --mist: #4a6056; --text-dim: #9ba69f; --side: #0e1210; --on-sage: #10211a;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink: #e8e4da; --paper: #141916; --fog: #2a322d; --card: #1c231f;
+    --sage: #86ad94; --sage-dim: #9cc4ab; --rust: #d89683; --gold: #dcae62;
+    --mist: #4a6056; --text-dim: #9ba69f; --side: #0e1210; --on-sage: #10211a;
+    color-scheme: dark;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* ── COVER ── */
+  #cover {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  #cover::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 70% at 30% 80%, rgba(122,158,135,0.18) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 60% at 75% 20%, rgba(196,146,58,0.10) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .anchor-symbol {
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+    opacity: 0.6;
+    animation: breathe 5s ease-in-out infinite;
+  }
+  @keyframes breathe {
+    0%,100% { transform: scale(1); opacity: 0.6; }
+    50%      { transform: scale(1.08); opacity: 0.85; }
+  }
+  .cover-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--sage-dim);
+    margin-bottom: 1.2rem;
+  }
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.2rem, 10vw, 5.8rem);
+    font-weight: 300;
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+  h1 em {
+    font-style: italic;
+    color: var(--sage-dim);
+  }
+  .cover-sub {
+    font-size: 1.05rem;
+    color: var(--text-dim);
+    max-width: 36ch;
+    margin: 1.5rem auto 3rem;
+    line-height: 1.6;
+  }
+  .btn-primary {
+    display: inline-block;
+    background: var(--sage);
+    color: var(--on-sage);
+    border: none;
+    border-radius: 2px;
+    padding: 0.85rem 2.4rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn-primary:hover { background: var(--sage-dim); transform: translateY(-1px); }
+  .cover-note {
+    margin-top: 2rem;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    font-style: italic;
+  }
+
+  /* ── MAIN APP ── */
+  #app { display: none; }
+
+  /* ── SIDEBAR NAV ── */
+  .layout { display: flex; min-height: 100vh; }
+  .sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    background: var(--side);
+    color: #e0d8cc;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  .sidebar-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 300;
+    padding: 0 1.5rem 2rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    letter-spacing: 0.04em;
+  }
+  .sidebar-logo span { color: var(--sage); }
+  .nav-section {
+    padding: 1.5rem 1.5rem 0.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.65rem 1.5rem;
+    cursor: pointer;
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.6);
+    transition: all 0.15s;
+    border-left: 2px solid transparent;
+  }
+  .nav-item:hover { color: #fff; background: rgba(255,255,255,0.05); }
+  .nav-item.active { color: #fff; border-left-color: var(--sage); background: rgba(122,158,135,0.12); }
+  .nav-item .icon { font-size: 1rem; width: 1.2rem; text-align: center; }
+  .sidebar-bottom { margin-top: auto; padding: 1.5rem; font-size: 0.75rem; color: rgba(255,255,255,0.2); }
+
+  /* ── CONTENT ── */
+  .content { flex: 1; padding: 3rem 3.5rem; max-width: 800px; }
+  .page { display: none; }
+  .page.active { display: block; }
+
+  .page-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--sage-dim);
+    margin-bottom: 0.8rem;
+  }
+  .page-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 300;
+    line-height: 1.15;
+    margin-bottom: 0.5rem;
+  }
+  .page-title em { font-style: italic; color: var(--rust); }
+  .page-desc {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    max-width: 54ch;
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--fog);
+  }
+
+  /* ── BREATHING ── */
+  .breath-stage {
+    text-align: center;
+    padding: 3rem 1rem;
+  }
+  .breath-ring-outer {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 2rem;
+    position: relative;
+    cursor: pointer;
+  }
+  .breath-ring {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background-color: rgba(122,158,135,0.12);
+    border: 1.5px solid var(--sage);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: scale(1);
+  }
+  .variant-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.6rem; margin-bottom: 1.5rem;
+  }
+  .variant-btn {
+    background: var(--card); border: 1px solid var(--fog); border-radius: 3px;
+    padding: 0.8rem 1rem; text-align: left; cursor: pointer; font-family: inherit;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .variant-btn:hover { border-color: var(--mist); }
+  .variant-btn.active { border-color: var(--sage); background: rgba(122,158,135,0.08); }
+  .variant-name { font-weight: 500; font-size: 0.88rem; color: var(--ink); }
+  .variant-sub { font-size: 0.75rem; color: var(--text-dim); }
+  .breath-note { font-size: 0.78rem; color: var(--text-dim); font-style: italic; margin-top: 1.5rem; max-width: 48ch; }
+  .breath-inner { font-family: 'Cormorant Garamond', serif; font-size: 2.4rem; font-weight: 300; color: var(--sage-dim); }
+  .breath-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+  .breath-counter {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin-bottom: 2rem;
+  }
+  .breath-controls { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+  /* ── SOUND CONTROLS ── */
+  .sound-bar {
+    display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap;
+    margin-top: 1.5rem; font-size: 0.8rem; color: var(--text-dim);
+  }
+  .sound-bar label { display: flex; align-items: center; gap: 0.5rem; }
+  .sound-bar select {
+    background: var(--card); border: 1px solid var(--fog); border-radius: 2px;
+    padding: 0.35rem 0.6rem; font-family: 'DM Sans', sans-serif; font-size: 0.8rem; color: var(--ink);
+  }
+  .sound-bar input[type=range] { accent-color: var(--sage); width: 110px; }
+
+  /* ── BUTTONS ── */
+  .btn { border: none; border-radius: 2px; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
+  .btn-sage { background: var(--sage); color: var(--on-sage); padding: 0.75rem 1.8rem; font-size: 0.88rem; font-weight: 500; }
+  .btn-sage:hover { background: var(--sage-dim); }
+  .btn-outline { background: transparent; color: var(--ink); padding: 0.7rem 1.5rem; font-size: 0.85rem; border: 1.5px solid var(--fog); }
+  .btn-outline:hover { border-color: var(--sage); color: var(--sage-dim); }
+
+  /* ── 5-4-3-2-1 SENSE GRID ── */
+  .sense-grid { display: grid; gap: 1.5rem; }
+  .sense-card {
+    background: var(--card);
+    border: 1px solid var(--fog);
+    border-radius: 3px;
+    padding: 1.5rem;
+    transition: border-color 0.2s;
+  }
+  .sense-card.done { border-color: var(--sage); background: rgba(122,158,135,0.05); }
+  .sense-header {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+  }
+  .sense-count {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+    width: 2rem;
+    text-align: center;
+  }
+  .sense-title { font-size: 0.88rem; font-weight: 500; }
+  .sense-icon { font-size: 1.3rem; margin-left: auto; }
+  .sense-inputs { display: flex; flex-direction: column; gap: 0.5rem; }
+  .sense-input {
+    background: var(--paper);
+    border: 1px solid var(--fog);
+    border-radius: 2px;
+    padding: 0.55rem 0.8rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .sense-input:focus { border-color: var(--sage); }
+  .sense-input::placeholder { color: var(--text-dim); }
+  .sense-check {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.8rem;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    cursor: pointer;
+  }
+  .sense-check input { accent-color: var(--sage); }
+
+  /* ── BODY SCAN ── */
+  .body-scan-list { display: flex; flex-direction: column; gap: 1rem; }
+  .scan-zone {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    background: var(--card);
+    border: 1px solid var(--fog);
+    border-radius: 3px;
+    padding: 1.2rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .scan-zone:hover { border-color: var(--mist); }
+  .scan-zone.active-zone { border-color: var(--sage); background: rgba(122,158,135,0.05); }
+  .zone-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    border: 1.5px solid var(--text-dim);
+    margin-top: 0.35rem;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+  .scan-zone.active-zone .zone-dot { background: var(--sage); border-color: var(--sage); }
+  .zone-name { font-weight: 500; font-size: 0.9rem; margin-bottom: 0.2rem; }
+  .zone-prompt { font-size: 0.82rem; color: var(--text-dim); }
+  .zone-note {
+    width: 100%; margin-top: 0.8rem;
+    background: var(--paper); border: 1px solid var(--fog); border-radius: 2px;
+    padding: 0.5rem 0.7rem; font-size: 0.82rem; font-family: 'DM Sans', sans-serif;
+    color: var(--ink); resize: none; outline: none;
+    display: none;
+  }
+  .scan-zone.active-zone .zone-note { display: block; }
+
+  /* ── JOURNAL ── */
+  .journal-section { margin-bottom: 2rem; }
+  .journal-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 0.6rem;
+  }
+  .journal-area {
+    width: 100%; min-height: 100px;
+    background: var(--card); border: 1px solid var(--fog); border-radius: 3px;
+    padding: 1rem 1.2rem; font-family: 'Cormorant Garamond', serif; font-size: 1.1rem;
+    font-weight: 300; line-height: 1.7; color: var(--ink); resize: vertical; outline: none;
+    transition: border-color 0.15s;
+  }
+  .journal-area:focus { border-color: var(--sage); }
+  .journal-prompt-list { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.8rem; }
+  .prompt-chip {
+    background: var(--fog); border: none; border-radius: 30px;
+    padding: 0.35rem 0.9rem; font-size: 0.78rem; cursor: pointer;
+    color: var(--text-dim); transition: all 0.15s;
+  }
+  .prompt-chip:hover { background: var(--mist); color: var(--ink); }
+
+  /* ── ANCHOR AFFIRMATIONS ── */
+  .affirmation-card {
+    background: var(--side); color: #e0d8cc;
+    border-radius: 3px; padding: 2.5rem;
+    margin-bottom: 1.5rem; text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .affirmation-card::before {
+    content: '"';
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 12rem; line-height: 1; font-weight: 300;
+    position: absolute; top: -2rem; left: 1rem;
+    color: rgba(255,255,255,0.04);
+    pointer-events: none;
+  }
+  .affirmation-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem; font-weight: 300; line-height: 1.4;
+    font-style: italic; position: relative; z-index: 1;
+  }
+  .affirmation-nav { display: flex; gap: 1rem; align-items: center; justify-content: center; }
+  .aff-counter { font-family: 'DM Mono', monospace; font-size: 0.8rem; color: var(--text-dim); }
+
+  /* ── PROGRESS TRACKER ── */
+  .tracker-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; margin-bottom: 2rem; }
+  .tracker-day {
+    aspect-ratio: 1; border-radius: 2px;
+    background: var(--fog); display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem; color: var(--text-dim); cursor: pointer; transition: all 0.15s;
+    font-family: 'DM Mono', monospace;
+  }
+  .tracker-day.done { background: var(--sage); color: var(--on-sage); }
+  .tracker-day.today { border: 2px solid var(--gold); }
+  .tracker-legend { display: flex; gap: 1.5rem; font-size: 0.78rem; color: var(--text-dim); margin-bottom: 2rem; align-items: center; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+
+  /* ── QUICK RESET ── */
+  .quick-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+  .quick-card {
+    background: var(--card); border: 1px solid var(--fog); border-radius: 3px;
+    padding: 1.5rem; cursor: pointer; transition: all 0.2s; text-align: center;
+  }
+  .quick-card:hover { border-color: var(--sage); transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+  .quick-icon { font-size: 2rem; margin-bottom: 0.7rem; }
+  .quick-name { font-weight: 500; font-size: 0.88rem; margin-bottom: 0.3rem; }
+  .quick-desc { font-size: 0.78rem; color: var(--text-dim); }
+
+  /* modal */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(26,23,20,0.7);
+    z-index: 100; align-items: center; justify-content: center; padding: 2rem;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--paper); max-width: 500px; width: 100%; border-radius: 3px;
+    padding: 2.5rem; position: relative;
+  }
+  .modal-close {
+    position: absolute; top: 1rem; right: 1rem; background: none; border: none;
+    font-size: 1.2rem; cursor: pointer; color: var(--text-dim);
+  }
+  .modal-title {
+    font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 300; margin-bottom: 0.5rem;
+  }
+  .modal-body { font-size: 0.9rem; color: var(--text-dim); line-height: 1.7; }
+  .modal-step { margin-bottom: 0.8rem; display: flex; gap: 0.6rem; }
+  .step-num { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: var(--sage); margin-top: 0.1rem; }
+
+  /* Divider */
+  .divider { border: none; border-top: 1px solid var(--fog); margin: 2rem 0; }
+
+  /* mobile */
+  @media (max-width: 700px) {
+    .sidebar { display: none; }
+    .content { padding: 2rem 1.5rem; }
+    .tracker-grid { grid-template-columns: repeat(7, 1fr); gap: 0.3rem; }
+  }
+
+  /* ── Artifact: gutters, status band, mobile nav ── */
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper); }
+  #cover { padding-block: 3rem; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .content { min-width: 0; padding-block: 3rem; padding-left: max(3.5rem, env(safe-area-inset-left, 0px)); padding-right: max(3.5rem, env(safe-area-inset-right, 0px)); }
+  .mobile-nav {
+    display: none; position: sticky; top: env(safe-area-inset-top, 0px); z-index: 9;
+    gap: 0.5rem; overflow-x: auto; background: var(--paper); border-bottom: 1px solid var(--fog);
+    padding-block: 0.6rem; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  .mobile-nav button {
+    flex: 0 0 auto; background: var(--card); color: var(--ink); border: 1px solid var(--fog); border-radius: 30px;
+    padding: 0.45rem 0.95rem; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; cursor: pointer; white-space: nowrap;
+  }
+  .mobile-nav button.active { background: var(--sage); border-color: var(--sage); color: var(--on-sage); }
+  button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--sage-dim); outline-offset: 2px; }
+  @media (max-width: 700px) {
+    .mobile-nav { display: flex; }
+    .content { padding-block: 1.5rem; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+    .breath-stage { padding-inline: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) { .anchor-symbol { animation: none; } }
+</style>
+
+
+<!-- COVER -->
+<div id="cover">
+  <div class="anchor-symbol">⚓</div>
+  <p class="cover-eyebrow">Twoja osobista przestrzeń oddechu</p>
+  <h1>Kotwica<br><em>Spokoju</em></h1>
+  <p class="cover-sub">Książka ćwiczeń uziemiających — na chwile, kiedy wszystko jest zbyt dużo.</p>
+  <button class="btn-primary" onclick="openApp()">Otwórz książkę →</button>
+  <p class="cover-note">Żadnych danych w chmurze. Wszystko zostaje tutaj.</p>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <nav class="mobile-nav" aria-label="Ćwiczenia"><button data-page="breath" class="active" onclick="showPage('breath')">Oddech</button><button data-page="senses" class="" onclick="showPage('senses')">5-4-3-2-1</button><button data-page="scan" class="" onclick="showPage('scan')">Skan ciała</button><button data-page="quick" class="" onclick="showPage('quick')">Szybki reset</button><button data-page="journal" class="" onclick="showPage('journal')">Dziennik</button><button data-page="affirmations" class="" onclick="showPage('affirmations')">Kotwice</button><button data-page="tracker" class="" onclick="showPage('tracker')">Tracker</button></nav>
+
+  <div class="layout">
+    <!-- SIDEBAR -->
+    <nav class="sidebar">
+      <div class="sidebar-logo">Ko<span>twi</span>ca</div>
+      <div class="nav-section">Ćwiczenia</div>
+      <div class="nav-item active" data-page="breath" onclick="showPage('breath')"><span class="icon">🌬️</span> Oddech</div>
+      <div class="nav-item" data-page="senses" onclick="showPage('senses')"><span class="icon">👁️</span> 5-4-3-2-1</div>
+      <div class="nav-item" data-page="scan" onclick="showPage('scan')"><span class="icon">🫀</span> Skan ciała</div>
+      <div class="nav-item" data-page="quick" onclick="showPage('quick')"><span class="icon">⚡</span> Szybki reset</div>
+      <div class="nav-section">Refleksja</div>
+      <div class="nav-item" data-page="journal" onclick="showPage('journal')"><span class="icon">📓</span> Dziennik</div>
+      <div class="nav-item" data-page="affirmations" onclick="showPage('affirmations')"><span class="icon">🌿</span> Kotwice</div>
+      <div class="nav-section">Postęp</div>
+      <div class="nav-item" data-page="tracker" onclick="showPage('tracker')"><span class="icon">📅</span> Tracker</div>
+      <div class="sidebar-bottom">Jesteś tu. To wystarczy.</div>
+    </nav>
+
+    <!-- CONTENT -->
+    <main class="content">
+
+      <!-- BREATH PAGE -->
+      <div class="page active" id="page-breath">
+        <p class="page-eyebrow" id="bvEyebrow">Ćwiczenie 01 — Podstawowe</p>
+        <h2 class="page-title" id="bvTitle">Oddech <em>4–4–6</em></h2>
+        <div class="variant-grid">
+          <button class="variant-btn active" data-v="basic" onclick="selectVariant('basic')"><div class="variant-name">Podstawowy</div><div class="variant-sub">4–4–6</div></button>
+          <button class="variant-btn" data-v="box" onclick="selectVariant('box')"><div class="variant-name">Pudełkowy</div><div class="variant-sub">4–4–4–4</div></button>
+          <button class="variant-btn" data-v="s478" onclick="selectVariant('s478')"><div class="variant-name">4–7–8</div><div class="variant-sub">na stres i sen</div></button>
+          <button class="variant-btn" data-v="sigh" onclick="selectVariant('sigh')"><div class="variant-name">Podwójny wdech</div><div class="variant-sub">szybkie uspokojenie</div></button>
+        </div>
+        <p class="page-desc" id="bvDesc">Prosty rytm na co dzień. Wdech nosem przez 4 sekundy, zatrzymanie na 4, spokojny wydech ustami przez 6. Dłuższy wydech niż wdech pomaga uspokoić układ nerwowy.</p>
+
+        <div class="breath-stage">
+          <div class="breath-ring-outer" id="breathRing">
+            <div class="breath-ring" id="breathCircle">
+              <div class="breath-inner" id="breathInner">🌬️</div>
+            </div>
+          </div>
+          <div class="breath-label" id="breathPhase">Kliknij, aby zacząć</div>
+          <div class="breath-counter" id="breathInfo">Rundy: 0 / 5</div>
+          <div class="breath-controls">
+            <button class="btn btn-sage" id="breathStartBtn" onclick="startBreath()">Zacznij</button>
+            <button class="btn btn-outline" onclick="resetBreath()">Reset</button>
+          </div>
+          <div class="sound-bar">
+            <label>🔈 Dźwięk
+              <select id="soundMode" onchange="onSoundModeChange()">
+                <option value="both">Łagodne tony + tło</option>
+                <option value="tones">Tylko łagodne tony</option>
+                <option value="ambient">Tylko ciche tło</option>
+                <option value="off">Wyłączony</option>
+              </select>
+            </label>
+            <label>Głośność
+              <input type="range" id="soundVol" min="0" max="100" value="35" oninput="onVolChange()">
+            </label>
+          </div>
+        </div>
+
+        <p class="breath-note">Jeśli poczujesz zawroty głowy lub dyskomfort, przerwij i oddychaj normalnie. Przy technikach z zatrzymaniem oddechu nie forsuj się. Podczas ćwiczenia ekran nie powinien wygasać (jeśli przeglądarka na to pozwala).</p>
+      </div>
+
+      <!-- SENSES PAGE -->
+      <div class="page" id="page-senses">
+        <p class="page-eyebrow">Ćwiczenie 02 — Uziemienie sensoryczne</p>
+        <h2 class="page-title">Metoda <em>5-4-3-2-1</em></h2>
+        <p class="page-desc">Angażuje korę przedczołową i odciąga uwagę od spirali myślowej. Nazwij kolejno to, co odbierają twoje zmysły tu i teraz.</p>
+
+        <div class="sense-grid" id="senseGrid">
+          <div class="sense-card" id="sc-5">
+            <div class="sense-header">
+              <div class="sense-count">5</div>
+              <div><div class="sense-title">Rzeczy, które <strong>widzisz</strong></div></div>
+              <div class="sense-icon">👁️</div>
+            </div>
+            <div class="sense-inputs" id="inputs-5"></div>
+            <label class="sense-check"><input type="checkbox" onchange="markSense('5',this)"> Gotowe</label>
+          </div>
+          <div class="sense-card" id="sc-4">
+            <div class="sense-header">
+              <div class="sense-count">4</div>
+              <div><div class="sense-title">Rzeczy, których <strong>dotykasz</strong></div></div>
+              <div class="sense-icon">🤲</div>
+            </div>
+            <div class="sense-inputs" id="inputs-4"></div>
+            <label class="sense-check"><input type="checkbox" onchange="markSense('4',this)"> Gotowe</label>
+          </div>
+          <div class="sense-card" id="sc-3">
+            <div class="sense-header">
+              <div class="sense-count">3</div>
+              <div><div class="sense-title">Dźwięki, które <strong>słyszysz</strong></div></div>
+              <div class="sense-icon">👂</div>
+            </div>
+            <div class="sense-inputs" id="inputs-3"></div>
+            <label class="sense-check"><input type="checkbox" onchange="markSense('3',this)"> Gotowe</label>
+          </div>
+          <div class="sense-card" id="sc-2">
+            <div class="sense-header">
+              <div class="sense-count">2</div>
+              <div><div class="sense-title">Zapachy, które <strong>czujesz</strong></div></div>
+              <div class="sense-icon">👃</div>
+            </div>
+            <div class="sense-inputs" id="inputs-2"></div>
+            <label class="sense-check"><input type="checkbox" onchange="markSense('2',this)"> Gotowe</label>
+          </div>
+          <div class="sense-card" id="sc-1">
+            <div class="sense-header">
+              <div class="sense-count">1</div>
+              <div><div class="sense-title">Smak, który <strong>czujesz</strong></div></div>
+              <div class="sense-icon">👅</div>
+            </div>
+            <div class="sense-inputs" id="inputs-1"></div>
+            <label class="sense-check"><input type="checkbox" onchange="markSense('1',this)"> Gotowe</label>
+          </div>
+        </div>
+        <div style="margin-top:1.5rem; display:flex; gap:1rem;">
+          <button class="btn btn-sage" onclick="resetSenses()">Zacznij od nowa</button>
+        </div>
+      </div>
+
+      <!-- BODY SCAN PAGE -->
+      <div class="page" id="page-scan">
+        <p class="page-eyebrow">Ćwiczenie 03 — Interocepcja</p>
+        <h2 class="page-title">Skan <em>ciała</em></h2>
+        <p class="page-desc">Kliknij każdą strefę ciała. Zatrzymaj się. Oddech. Zauważ — bez oceniania, bez naprawiania.</p>
+
+        <div class="body-scan-list">
+          <div class="scan-zone" onclick="toggleZone(this)">
+            <div class="zone-dot"></div>
+            <div style="flex:1">
+              <div class="zone-name">🧠 Głowa i twarz</div>
+              <div class="zone-prompt">Czy jest napięcie w szczęce? Czole? Oczach? Jak ciepło jest powietrze przy nozdrzach?</div>
+              <textarea class="zone-note" rows="2" placeholder="Co zauważasz..."></textarea>
+            </div>
+          </div>
+          <div class="scan-zone" onclick="toggleZone(this)">
+            <div class="zone-dot"></div>
+            <div style="flex:1">
+              <div class="zone-name">🤝 Szyja i ramiona</div>
+              <div class="zone-prompt">Czy ramiona są uniesione ku uszom? Czy szyja jest sztywna? Pozwól im opaść.</div>
+              <textarea class="zone-note" rows="2" placeholder="Co zauważasz..."></textarea>
+            </div>
+          </div>
+          <div class="scan-zone" onclick="toggleZone(this)">
+            <div class="zone-dot"></div>
+            <div style="flex:1">
+              <div class="zone-name">🫁 Klatka piersiowa</div>
+              <div class="zone-prompt">Czy oddech jest płytki? Czy jest ucisk? Połóż dłoń i poczuj ruch żeber.</div>
+              <textarea class="zone-note" rows="2" placeholder="Co zauważasz..."></textarea>
+            </div>
+          </div>
+          <div class="scan-zone" onclick="toggleZone(this)">
+            <div class="zone-dot"></div>
+            <div style="flex:1">
+              <div class="zone-name">🌊 Brzuch</div>
+              <div class="zone-prompt">Czy brzuch jest ściśnięty? Gdzie dokładnie czujesz napięcie lub pustość?</div>
+              <textarea class="zone-note" rows="2" placeholder="Co zauważasz..."></textarea>
+            </div>
+          </div>
+          <div class="scan-zone" onclick="toggleZone(this)">
+            <div class="zone-dot"></div>
+            <div style="flex:1">
+              <div class="zone-name">🦵 Nogi i stopy</div>
+              <div class="zone-prompt">Czy stopy czują ziemię? Naciśnij podeszwy mocno na podłogę. Poczuj opór.</div>
+              <textarea class="zone-note" rows="2" placeholder="Co zauważasz..."></textarea>
+            </div>
+          </div>
+          <div class="scan-zone" onclick="toggleZone(this)">
+            <div class="zone-dot"></div>
+            <div style="flex:1">
+              <div class="zone-name">✋ Dłonie</div>
+              <div class="zone-prompt">Czy dłonie są zaciśnięte? Zimne? Otwórz je szeroko, a potem powoli zamknij.</div>
+              <textarea class="zone-note" rows="2" placeholder="Co zauważasz..."></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- QUICK RESET PAGE -->
+      <div class="page" id="page-quick">
+        <p class="page-eyebrow">Ćwiczenie 04 — Szybkie techniki</p>
+        <h2 class="page-title">Szybki <em>Reset</em></h2>
+        <p class="page-desc">Kiedy nie masz czasu na pełne ćwiczenie. Wybierz technikę, przeczytaj instrukcję, zrób to.</p>
+
+        <div class="quick-grid">
+          <div class="quick-card" onclick="openModal('cold')">
+            <div class="quick-icon">💧</div>
+            <div class="quick-name">Zimna woda</div>
+            <div class="quick-desc">30 sekund na reset układu nerwowego.</div>
+          </div>
+          <div class="quick-card" onclick="openModal('feet')">
+            <div class="quick-icon">🦶</div>
+            <div class="quick-name">Stopy na ziemi</div>
+            <div class="quick-desc">Klasyczne uziemienie — gdzie teraz jesteś.</div>
+          </div>
+          <div class="quick-card" onclick="openModal('hum')">
+            <div class="quick-icon">🎵</div>
+            <div class="quick-name">Mruczenie</div>
+            <div class="quick-desc">Aktywuje nerw błędny przez wibracje.</div>
+          </div>
+          <div class="quick-card" onclick="openModal('orient')">
+            <div class="quick-icon">🌍</div>
+            <div class="quick-name">Orientacja</div>
+            <div class="quick-desc">Powoli rozejrzyj się — jesteś bezpieczny.</div>
+          </div>
+          <div class="quick-card" onclick="openModal('havening')">
+            <div class="quick-icon">🤗</div>
+            <div class="quick-name">Havening</div>
+            <div class="quick-desc">Kojący dotyk własnych ramion i twarzy.</div>
+          </div>
+          <div class="quick-card" onclick="openModal('cold_face')">
+            <div class="quick-icon">🧊</div>
+            <div class="quick-name">Odruch nurka</div>
+            <div class="quick-desc">Zimna woda na twarz — natychmiastowa reakcja.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- JOURNAL PAGE -->
+      <div class="page" id="page-journal">
+        <p class="page-eyebrow">Refleksja — Dziennik</p>
+        <h2 class="page-title">Co się <em>dzieje</em>?</h2>
+        <p class="page-desc">Pisanie wyciąga emocje z głowy na papier — to samo w sobie już zmniejsza intensywność. Nie musisz pisać pięknie.</p>
+
+        <div class="journal-section">
+          <div class="journal-label">Jak się teraz czuję?</div>
+          <div class="journal-prompt-list">
+            <button class="prompt-chip" onclick="addPrompt('j1','Czuję się ')">+ Zacznij od "Czuję się..."</button>
+            <button class="prompt-chip" onclick="addPrompt('j1','W moim ciele zauważam ')">+ W ciele zauważam...</button>
+            <button class="prompt-chip" onclick="addPrompt('j1','Ta emocja chce mi powiedzieć ')">+ Co mówi ta emocja?</button>
+          </div>
+          <textarea class="journal-area" id="j1" rows="5" placeholder="Pisz wszystko, co przychodzi. Nie ma złych odpowiedzi."></textarea>
+        </div>
+
+        <div class="journal-section">
+          <div class="journal-label">Co sprowokowało ten stan?</div>
+          <div class="journal-prompt-list">
+            <button class="prompt-chip" onclick="addPrompt('j2','To zaczęło się, gdy ')">+ To zaczęło się gdy...</button>
+            <button class="prompt-chip" onclick="addPrompt('j2','Myśl, która pojawia się najczęściej: ')">+ Najczęstsza myśl</button>
+          </div>
+          <textarea class="journal-area" id="j2" rows="4" placeholder="Trigger, sytuacja, myśl..."></textarea>
+        </div>
+
+        <div class="journal-section">
+          <div class="journal-label">Jedno zdanie o tym, czego teraz potrzebuję</div>
+          <textarea class="journal-area" id="j3" rows="2" placeholder="Potrzebuję..."></textarea>
+        </div>
+
+        <button class="btn btn-outline" onclick="clearJournal()">Wyczyść stronę</button>
+      </div>
+
+      <!-- AFFIRMATIONS PAGE -->
+      <div class="page" id="page-affirmations">
+        <p class="page-eyebrow">Kotwice słowne</p>
+        <h2 class="page-title">Zdania <em>zakotwiczające</em></h2>
+        <p class="page-desc">Czytaj powoli. Odetchnij po każdym zdaniu. Możesz też napisać własne kotwice poniżej.</p>
+
+        <div class="affirmation-card">
+          <div class="affirmation-text" id="affText">"Jestem tu. Jestem teraz. To wystarczy."</div>
+        </div>
+        <div class="affirmation-nav">
+          <button class="btn btn-outline" onclick="prevAff()">← Poprzednie</button>
+          <div class="aff-counter" id="affCounter">1 / 10</div>
+          <button class="btn btn-sage" onclick="nextAff()">Następne →</button>
+        </div>
+
+        <hr class="divider">
+
+        <div class="journal-section">
+          <div class="journal-label">Moje własne kotwice (jedna na linię)</div>
+          <textarea class="journal-area" id="myAnchors" rows="5" placeholder="Napisz zdania, które pomagają właśnie tobie..."></textarea>
+        </div>
+      </div>
+
+      <!-- TRACKER PAGE -->
+      <div class="page" id="page-tracker">
+        <p class="page-eyebrow">Postęp — 30 dni</p>
+        <h2 class="page-title">Twój <em>rytm</em></h2>
+        <p class="page-desc">Każdy dzień, w którym wróciłeś do siebie — jest ważny. Kliknij dzień, aby oznaczyć.</p>
+
+        <div class="tracker-legend">
+          <span><span class="legend-dot" style="background:var(--sage)"></span> Praktyka wykonana</span>
+          <span><span class="legend-dot" style="background:var(--fog)"></span> Dzień bez</span>
+          <span><span class="legend-dot" style="border:2px solid var(--gold); background:transparent"></span> Dzisiaj</span>
+        </div>
+        <div class="tracker-grid" id="trackerGrid"></div>
+
+        <hr class="divider">
+        <div style="display:flex; gap:2rem; flex-wrap:wrap;">
+          <div>
+            <div class="journal-label">Seria obecna</div>
+            <div style="font-family:'Cormorant Garamond',serif; font-size:2.5rem; font-weight:300;" id="streakCount">0</div>
+            <div style="font-size:0.78rem; color:var(--text-dim)">dni z rzędu</div>
+          </div>
+          <div>
+            <div class="journal-label">Łącznie praktyk</div>
+            <div style="font-family:'Cormorant Garamond',serif; font-size:2.5rem; font-weight:300;" id="totalCount">0</div>
+            <div style="font-size:0.78rem; color:var(--text-dim)">ze 30 dni</div>
+          </div>
+        </div>
+        <div style="margin-top:1.5rem;">
+          <button class="btn btn-outline" id="resetTrackerBtn" onclick="resetTracker()">Resetuj tracker</button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title" id="modalTitle"></div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+
+<script>
+/* ─── COVER ─── */
+function openApp() {
+  document.getElementById('cover').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  buildSenses();
+  buildTracker();
+}
+
+/* ─── NAV ─── */
+function showPage(id) {
+  if (id !== 'breath' && breathRunning) resetBreath();
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('[data-page]').forEach(n => n.classList.toggle('active', n.dataset.page === id));
+  document.getElementById('page-' + id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+/* ─── BREATHING ─── */
+const BREATH_VARIANTS = {
+  basic: {
+    eyebrow: 'Ćwiczenie 01 — Podstawowe', name: 'Oddech', pat: '4–4–6', rounds: 5,
+    desc: 'Prosty rytm na co dzień. Wdech nosem przez 4 sekundy, zatrzymanie na 4, spokojny wydech ustami przez 6. Dłuższy wydech niż wdech pomaga uspokoić układ nerwowy.',
+    phases: [
+      { label: 'Wdech nosem…',   ms: 4000, type: 'in' },
+      { label: 'Zatrzymaj…',     ms: 4000, type: 'hold' },
+      { label: 'Wydech ustami…', ms: 6000, type: 'out' },
+    ],
+  },
+  box: {
+    eyebrow: 'Ćwiczenie 02 — Równy rytm', name: 'Oddech', pat: 'pudełkowy', rounds: 6,
+    desc: 'Wdech, pauza, wydech, pauza — każdy etap po 4 sekundy. Równy, przewidywalny rytm dobrze sprawdza się, gdy potrzebujesz skupienia i opanowania.',
+    phases: [
+      { label: 'Wdech…',                   ms: 4000, type: 'in' },
+      { label: 'Zatrzymaj…',               ms: 4000, type: 'hold' },
+      { label: 'Wydech…',                  ms: 4000, type: 'out' },
+      { label: 'Zatrzymaj (puste płuca)…', ms: 4000, type: 'hold' },
+    ],
+  },
+  s478: {
+    eyebrow: 'Ćwiczenie 03 — Na silny stres i sen', name: 'Oddech', pat: '4–7–8', rounds: 4,
+    desc: 'Krótki wdech, długa pauza i bardzo długi wydech. Pomaga wyciszyć się przy silnym stresie i przed snem. Zacznij od 4 rund. Nie ćwicz tego w trakcie prowadzenia samochodu.',
+    phases: [
+      { label: 'Wdech nosem…',               ms: 4000, type: 'in' },
+      { label: 'Zatrzymaj…',                 ms: 7000, type: 'hold' },
+      { label: 'Długi wydech ustami…',       ms: 8000, type: 'out' },
+    ],
+  },
+  sigh: {
+    eyebrow: 'Ćwiczenie 04 — Szybkie uspokojenie', name: 'Westchnienie', pat: 'fizjologiczne', rounds: 4,
+    desc: 'Dwa wdechy nosem jeden po drugim — długi i krótki „dosłodek" — a potem długi, powolny wydech ustami. Jedna z najszybszych technik na ostre napięcie; wystarczy kilka rund.',
+    phases: [
+      { label: 'Długi wdech nosem…',       ms: 2000, type: 'in' },
+      { label: 'Jeszcze mały wdech…',      ms: 1000, type: 'in2' },
+      { label: 'Długi wydech ustami…',     ms: 6000, type: 'out' },
+    ],
+  },
+};
+const BREATH_LOOK = {
+  in:  { s: 1.25, a: 0.30 },
+  in2: { s: 1.42, a: 0.38 },
+  out: { s: 0.70, a: 0.08 },
+};
+let breathVariant = 'basic';
+let breathRunning = false, breathPhaseIdx = 0, breathRound = 0, breathTimer = null, breathTick = null;
+function curV() { return BREATH_VARIANTS[breathVariant]; }
+
+function selectVariant(key) {
+  resetBreath();
+  breathVariant = key;
+  const v = curV();
+  document.getElementById('bvEyebrow').textContent = v.eyebrow;
+  document.getElementById('bvTitle').innerHTML = v.name + ' <em>' + v.pat + '</em>';
+  document.getElementById('bvDesc').textContent = v.desc;
+  document.getElementById('breathInfo').textContent = 'Rundy: 0 / ' + v.rounds;
+  document.querySelectorAll('.variant-btn').forEach(b => b.classList.toggle('active', b.dataset.v === key));
+}
+
+function setRingIdle(ms) {
+  const c = document.getElementById('breathCircle');
+  c.style.transition = 'transform ' + ms + 'ms ease-in-out, background-color ' + ms + 'ms ease-in-out';
+  c.style.transform = 'scale(1)';
+  c.style.backgroundColor = 'rgba(122,158,135,0.12)';
+}
+function startCountdown(ms) {
+  clearInterval(breathTick);
+  const inner = document.getElementById('breathInner');
+  let left = Math.ceil(ms / 1000);
+  inner.textContent = left;
+  breathTick = setInterval(() => {
+    left--;
+    if (left > 0) inner.textContent = left; else clearInterval(breathTick);
+  }, 1000);
+}
+
+/* Ekran nie wygasa podczas ćwiczenia (Screen Wake Lock, jeśli przeglądarka pozwala) */
+let wakeLock = null;
+async function keepAwake() {
+  try {
+    if (!('wakeLock' in navigator) || wakeLock) return;
+    wakeLock = await navigator.wakeLock.request('screen');
+    wakeLock.addEventListener('release', () => { wakeLock = null; });
+  } catch (e) { wakeLock = null; }
+}
+function allowSleep() {
+  try { if (wakeLock) { wakeLock.release(); } } catch (e) {}
+  wakeLock = null;
+}
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && breathRunning) keepAwake();
+});
+
+function startBreath() {
+  if (breathRunning) return;
+  breathRunning = true; breathPhaseIdx = 0; breathRound = 0;
+  keepAwake();
+  initAudio();
+  if (soundWants('ambient')) startAmbient();
+  const c = document.getElementById('breathCircle');
+  c.style.transition = 'none';
+  c.style.transform = 'scale(0.7)';
+  c.style.backgroundColor = 'rgba(122,158,135,0.08)';
+  void c.offsetWidth;
+  document.getElementById('breathStartBtn').disabled = true;
+  document.getElementById('breathInfo').textContent = 'Rundy: 0 / ' + curV().rounds;
+  runBreathPhase();
+}
+function runBreathPhase() {
+  if (!breathRunning) return;
+  const v = curV();
+  const phase = v.phases[breathPhaseIdx];
+  const c = document.getElementById('breathCircle');
+  if (phase.type !== 'hold') {
+    const look = BREATH_LOOK[phase.type];
+    c.style.transition = 'transform ' + phase.ms + 'ms ease-in-out, background-color ' + phase.ms + 'ms ease-in-out';
+    c.style.transform = 'scale(' + look.s + ')';
+    c.style.backgroundColor = 'rgba(122,158,135,' + look.a + ')';
+  }
+  document.getElementById('breathPhase').textContent = phase.label;
+  playCue(phase);
+  startCountdown(phase.ms);
+  breathTimer = setTimeout(() => {
+    breathPhaseIdx++;
+    if (breathPhaseIdx >= v.phases.length) {
+      breathPhaseIdx = 0;
+      breathRound++;
+      document.getElementById('breathInfo').textContent = 'Rundy: ' + breathRound + ' / ' + v.rounds;
+      if (breathRound >= v.rounds) { endBreath(); return; }
+    }
+    runBreathPhase();
+  }, phase.ms);
+}
+function endBreath() {
+  breathRunning = false;
+  allowSleep();
+  clearInterval(breathTick);
+  endChime();
+  stopAmbient();
+  document.getElementById('breathPhase').textContent = '✓ Świetnie! Odpoczywaj.';
+  document.getElementById('breathInner').textContent = '🌬️';
+  setRingIdle(1500);
+  document.getElementById('breathStartBtn').disabled = false;
+}
+function resetBreath() {
+  clearTimeout(breathTimer);
+  clearInterval(breathTick);
+  allowSleep();
+  stopCue();
+  stopAmbient();
+  breathRunning = false; breathPhaseIdx = 0; breathRound = 0;
+  document.getElementById('breathPhase').textContent = 'Kliknij, aby zacząć';
+  document.getElementById('breathInfo').textContent = 'Rundy: 0 / ' + curV().rounds;
+  document.getElementById('breathInner').textContent = '🌬️';
+  setRingIdle(600);
+  document.getElementById('breathStartBtn').disabled = false;
+}
+
+/* ─── SOUND (Web Audio, bez plików — wszystko generowane w przeglądarce) ─── */
+let audioCtx = null, masterGain = null, ambientNodes = null, cueNodes = null;
+
+function soundMode() { return document.getElementById('soundMode').value; }
+function soundWants(kind) {
+  const m = soundMode();
+  if (m === 'off') return false;
+  if (kind === 'ambient') return m === 'both' || m === 'ambient';
+  if (kind === 'tones')   return m === 'both' || m === 'tones';
+  return false;
+}
+function masterLevel() { return (document.getElementById('soundVol').value / 100) * 0.35; }
+
+function initAudio() {
+  if (!audioCtx) {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    audioCtx = new AC();
+    masterGain = audioCtx.createGain();
+    masterGain.gain.value = masterLevel();
+    masterGain.connect(audioCtx.destination);
+  }
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+}
+
+function onVolChange() {
+  if (masterGain) masterGain.gain.setTargetAtTime(masterLevel(), audioCtx.currentTime, 0.05);
+}
+function onSoundModeChange() {
+  if (!breathRunning || !audioCtx) return;
+  if (soundWants('ambient')) startAmbient(); else stopAmbient();
+  if (!soundWants('tones')) stopCue();
+}
+
+/* Ciche tło: dwa bardzo niskie, rozstrojone o włos dźwięki + filtr — jak odległe, jednostajne brzmienie */
+function startAmbient() {
+  if (!audioCtx || ambientNodes) return;
+  const t = audioCtx.currentTime;
+  const g = audioCtx.createGain();
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.linearRampToValueAtTime(0.5, t + 3);
+  const lp = audioCtx.createBiquadFilter();
+  lp.type = 'lowpass'; lp.frequency.value = 400;
+  const oscs = [110, 110.6, 165].map((f, i) => {
+    const o = audioCtx.createOscillator();
+    o.type = 'sine'; o.frequency.value = f;
+    const og = audioCtx.createGain();
+    og.gain.value = i === 2 ? 0.25 : 0.45;
+    o.connect(og); og.connect(lp);
+    o.start(t);
+    return o;
+  });
+  lp.connect(g); g.connect(masterGain);
+  ambientNodes = { g, oscs };
+}
+function stopAmbient() {
+  if (!ambientNodes || !audioCtx) return;
+  const { g, oscs } = ambientNodes;
+  const t = audioCtx.currentTime;
+  g.gain.cancelScheduledValues(t);
+  g.gain.setValueAtTime(g.gain.value, t);
+  g.gain.linearRampToValueAtTime(0.0001, t + 1.5);
+  oscs.forEach(o => o.stop(t + 1.6));
+  ambientNodes = null;
+}
+
+/* Sygnały oddechu: ton płynnie rośnie przy wdechu, ledwo słyszalny przy zatrzymaniu, opada przy wydechu.
+   Czas i obwiednia dopasowują się do długości fazy — bez kliknięć i nagłych dźwięków. */
+function playCue(phase) {
+  if (!audioCtx || !soundWants('tones')) return;
+  stopCue();
+  const t = audioCtx.currentTime;
+  const d = phase.ms / 1000;
+  const o = audioCtx.createOscillator();
+  const g = audioCtx.createGain();
+  o.type = 'sine';
+  g.gain.setValueAtTime(0.0001, t);
+  let stopAt = d + 0.1;
+  if (phase.type === 'in' || phase.type === 'in2') {
+    const f0 = phase.type === 'in' ? 196 : 294;
+    const f1 = phase.type === 'in' ? 294 : 349;
+    const atk = Math.min(1.2, d * 0.3), rel = Math.min(0.8, d * 0.2);
+    o.frequency.setValueAtTime(f0, t);
+    o.frequency.linearRampToValueAtTime(f1, t + d);
+    g.gain.linearRampToValueAtTime(0.5, t + atk);
+    g.gain.setValueAtTime(0.5, t + d - rel);
+    g.gain.linearRampToValueAtTime(0.0001, t + d);
+  } else if (phase.type === 'hold') {
+    // zatrzymanie: tylko bardzo cichy, krótki ton na starcie
+    const len = Math.min(2.2, d);
+    o.frequency.setValueAtTime(294, t);
+    g.gain.linearRampToValueAtTime(0.18, t + Math.min(0.8, len * 0.4));
+    g.gain.linearRampToValueAtTime(0.0001, t + len);
+    stopAt = len + 0.1;
+  } else {
+    const atk = Math.min(1.2, d * 0.2), rel = Math.min(1.2, d * 0.2);
+    o.frequency.setValueAtTime(294, t);
+    o.frequency.linearRampToValueAtTime(196, t + d);
+    g.gain.linearRampToValueAtTime(0.45, t + atk);
+    g.gain.setValueAtTime(0.45, t + d - rel);
+    g.gain.linearRampToValueAtTime(0.0001, t + d);
+  }
+  o.connect(g); g.connect(masterGain);
+  o.start(t);
+  o.stop(t + stopAt);
+  cueNodes = { o, g };
+}
+function stopCue() {
+  if (!cueNodes || !audioCtx) return;
+  const t = audioCtx.currentTime;
+  try {
+    cueNodes.g.gain.cancelScheduledValues(t);
+    cueNodes.g.gain.setValueAtTime(cueNodes.g.gain.value, t);
+    cueNodes.g.gain.linearRampToValueAtTime(0.0001, t + 0.25);
+    cueNodes.o.stop(t + 0.3);
+  } catch (e) {}
+  cueNodes = null;
+}
+function endChime() {
+  if (!audioCtx || !soundWants('tones')) return;
+  const t = audioCtx.currentTime;
+  [262, 392].forEach((f, i) => {
+    const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+    o.type = 'sine'; o.frequency.value = f;
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.linearRampToValueAtTime(0.3, t + 0.6);
+    g.gain.linearRampToValueAtTime(0.0001, t + 3);
+    o.connect(g); g.connect(masterGain);
+    o.start(t + i * 0.25); o.stop(t + 3.3 + i * 0.25);
+  });
+}
+
+/* ─── SENSES ─── */
+const senseCounts = { '5': 5, '4': 4, '3': 3, '2': 2, '1': 1 };
+const sensePlaceholders = {
+  '5': ['np. ściana po prawej','np. okno','np. moje dłonie','np. kubek na biurku','np. cień na podłodze'],
+  '4': ['np. siedzenie krzesła','np. podłoga pod stopami','np. ubranie na skórze','np. temperatura powietrza'],
+  '3': ['np. oddech','np. ruch za oknem','np. wentylacja'],
+  '2': ['np. własny oddech','np. zapach pokoju'],
+  '1': ['np. posmak kawy lub wody'],
+};
+function buildSenses() {
+  Object.keys(senseCounts).forEach(k => {
+    const div = document.getElementById('inputs-' + k);
+    div.innerHTML = '';
+    for (let i = 0; i < senseCounts[k]; i++) {
+      const inp = document.createElement('input');
+      inp.type = 'text'; inp.className = 'sense-input';
+      inp.placeholder = sensePlaceholders[k][i] || '...';
+      div.appendChild(inp);
+    }
+  });
+}
+function markSense(num, cb) {
+  document.getElementById('sc-' + num).classList.toggle('done', cb.checked);
+}
+function resetSenses() { buildSenses(); document.querySelectorAll('.sense-card').forEach(c => c.classList.remove('done')); document.querySelectorAll('.sense-check input').forEach(i => i.checked = false); }
+
+/* ─── BODY SCAN ─── */
+function toggleZone(el) {
+  el.classList.toggle('active-zone');
+}
+
+/* ─── JOURNAL ─── */
+function addPrompt(id, text) { document.getElementById(id).value += text; document.getElementById(id).focus(); }
+function clearJournal() { ['j1','j2','j3'].forEach(id => document.getElementById(id).value = ''); }
+
+/* ─── AFFIRMATIONS ─── */
+const affirmations = [
+  '"Jestem tu. Jestem teraz. To wystarczy."',
+  '"Moje ciało wie, jak wrócić do spokoju."',
+  '"Ta fala przeminie. Przetrwałem już wcześniej."',
+  '"Nie muszę wszystkiego rozwiązać teraz."',
+  '"Oddech jest moją kotwicą."',
+  '"Jestem bezpieczny w tym momencie."',
+  '"Emocje to sygnały, nie wyroki."',
+  '"Zasługuję na spokój."',
+  '"Jeden krok. Jeden oddech. Jeden moment."',
+  '"Wracam do siebie."',
+];
+let affIdx = 0;
+function updateAff() {
+  document.getElementById('affText').textContent = affirmations[affIdx];
+  document.getElementById('affCounter').textContent = `${affIdx + 1} / ${affirmations.length}`;
+}
+function nextAff() { affIdx = (affIdx + 1) % affirmations.length; updateAff(); }
+function prevAff() { affIdx = (affIdx - 1 + affirmations.length) % affirmations.length; updateAff(); }
+
+/* ─── TRACKER ─── */
+let trackerData = {};
+try { trackerData = JSON.parse(localStorage.getItem('kotw_tracker') || '{}'); } catch (e) { trackerData = {}; }
+function saveTracker() { try { localStorage.setItem('kotw_tracker', JSON.stringify(trackerData)); } catch (e) {} }
+function buildTracker() {
+  const grid = document.getElementById('trackerGrid');
+  grid.innerHTML = '';
+  const today = new Date(); today.setHours(0,0,0,0);
+  let streak = 0, total = 0;
+  for (let i = 29; i >= 0; i--) {
+    const d = new Date(today); d.setDate(d.getDate() - i);
+    const key = d.toISOString().split('T')[0];
+    const isToday = i === 0;
+    const done = !!trackerData[key];
+    if (done) total++;
+    const el = document.createElement('div');
+    el.className = 'tracker-day' + (done ? ' done' : '') + (isToday ? ' today' : '');
+    el.textContent = d.getDate();
+    el.title = key;
+    el.onclick = () => toggleTrackerDay(key, el);
+    grid.appendChild(el);
+  }
+  // streak
+  for (let i = 0; i < 30; i++) {
+    const d = new Date(today); d.setDate(d.getDate() - i);
+    const key = d.toISOString().split('T')[0];
+    if (trackerData[key]) streak++; else break;
+  }
+  document.getElementById('streakCount').textContent = streak;
+  document.getElementById('totalCount').textContent = total;
+}
+function toggleTrackerDay(key, el) {
+  if (trackerData[key]) { delete trackerData[key]; el.classList.remove('done'); }
+  else { trackerData[key] = true; el.classList.add('done'); }
+  saveTracker();
+  buildTracker();
+}
+let resetArmed = false;
+function resetTracker() {
+  const btn = document.getElementById('resetTrackerBtn');
+  if (!resetArmed) {
+    resetArmed = true; btn.textContent = 'Na pewno? Kliknij jeszcze raz';
+    setTimeout(() => { resetArmed = false; btn.textContent = 'Resetuj tracker'; }, 4000);
+    return;
+  }
+  resetArmed = false; btn.textContent = 'Resetuj tracker';
+  trackerData = {}; saveTracker(); buildTracker();
+};
+
+function openModal(key) {
+  const m = modals[key];
+  document.getElementById('modalTitle').textContent = m.title;
+  document.getElementById('modalBody').innerHTML = m.body;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
+document.getElementById('modalOverlay').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+</script>
+
+</body></html>
